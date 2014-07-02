@@ -1,8 +1,8 @@
 {
-    "name": "league/notify",
+    "name": "jeykeu/notify",
     "description": "Bootstrap3 notifications for CodeIgniter",
     "keywords": [
-        "league",
+        "jeykeu",
         "notify",
         "bootstrap",
         "codeigniter"
@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-0": {
-            "League": ["src", "tests"],
+            "JeyKeu": ["src", "tests"],
             "Silex\\Provider": "src"
         }
     }

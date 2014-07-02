@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Notify;
+namespace JeyKeu\Notify;
 
 if (!defined('BASEPATH')) {
     exit('No direct script access allowed');

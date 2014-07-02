@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Notify\Test;
+namespace JeyKeu\Notify\Test;
 
 class NotifyTest extends \PHPUnit_Framework_TestCase
 {

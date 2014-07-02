@@ -1,12 +1,6 @@
-# League Notify for CodeIgniter
+# JeyKeu Notify for CodeIgniter
 
-[![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/thephpleague/statsd)
-[![Total Downloads](https://poser.pugx.org/league/statsd/downloads.png)](https://packagist.org/packages/league/statsd)
-[![Latest Stable Version](https://poser.pugx.org/league/statsd/v/stable.png)](https://packagist.org/packages/league/statsd)
-
-**Replace Notify with your own package name in the above URLs**
-
-:package_description
+Bootstrap3 notifications for CodeIgniter
 
 
 ## Install
@@ -16,7 +10,7 @@ Via Composer
 ``` json
 {
     "require": {
-        "league/notify": "~1.0"
+        "jeykeu/notify": "~1.0"
     }
 }
 ```
@@ -25,8 +19,8 @@ Via Composer
 ## Usage
 
 ``` php
-$notify = new League\Notify();
-echo $notify->echoPhrase('Hello, League!');
+$notify = new JeyKeu\Notify();
+echo $notify->echoPhrase('Hello, JeyKeu!');
 
 ```
 
@@ -40,15 +34,14 @@ $ phpunit
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/thephpleague/:package_name/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/jeykeu/notify/blob/master/CONTRIBUTING.md) for details.
 
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](https://github.com/thephpleague/:package_name/contributors)
+- [jeykeu](https://github.com/jeykeu)
 
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/thephpleague/:package_name/blob/master/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/jeykeu/notify/blob/master/LICENSE) for more information.
