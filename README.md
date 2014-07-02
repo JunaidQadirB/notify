@@ -1,10 +1,10 @@
-# League Skeleton
+# League Notify for CodeIgniter
 
 [![Build Status](https://travis-ci.org/thephpleague/statsd.png?branch=master)](https://travis-ci.org/thephpleague/statsd)
 [![Total Downloads](https://poser.pugx.org/league/statsd/downloads.png)](https://packagist.org/packages/league/statsd)
 [![Latest Stable Version](https://poser.pugx.org/league/statsd/v/stable.png)](https://packagist.org/packages/league/statsd)
 
-**Replace Skeleton with your own package name in the above URLs**
+**Replace Notify with your own package name in the above URLs**
 
 :package_description
 
@@ -16,7 +16,7 @@ Via Composer
 ``` json
 {
     "require": {
-        "league/:package_name": "~1.0"
+        "league/notify": "~1.0"
     }
 }
 ```
@@ -25,8 +25,8 @@ Via Composer
 ## Usage
 
 ``` php
-$skeleton = new League\Skeleton();
-echo $skeleton->echoPhrase('Hello, League!');
+$notify = new League\Notify();
+echo $notify->echoPhrase('Hello, League!');
 
 ```
 

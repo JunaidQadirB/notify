@@ -1,8 +1,8 @@
 <?php
 
-namespace League\Skeleton\Test;
+namespace League\Notify\Test;
 
-class ExampleTest extends \PHPUnit_Framework_TestCase
+class NotifyTest extends \PHPUnit_Framework_TestCase
 {
 
 
