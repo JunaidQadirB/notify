@@ -17,6 +17,12 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@bitbucket.org:jeykeu/notify.git"
+        }
+    ],
     "require-dev": {
     },
     "autoload": {
