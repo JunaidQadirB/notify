@@ -17,12 +17,17 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@bitbucket.org:jeykeu/notify.git"
+        }
+    ],
     "require-dev": {
     },
     "autoload": {
         "psr-0": {
-            "JeyKeu": ["src", "tests"],
-            "Silex\\Provider": "src"
+            "JeyKeu": ["src", "tests"]
         }
     }
 }
