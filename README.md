@@ -20,7 +20,12 @@ Via Composer
 
 ``` php
 $notify = new JeyKeu\Notify\Notify();
+
+//Add a notification
 $notify->add($handle, $viewData, $type, $isVolatile, $isDissmissable, $excludePages);
+
+//Remove a notification
+$notify->remove($handle);
 
 ```
 
