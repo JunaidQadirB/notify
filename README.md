@@ -19,8 +19,8 @@ Via Composer
 ## Usage
 
 ``` php
-$notify = new JeyKeu\Notify();
-echo $notify->echoPhrase('Hello, JeyKeu!');
+$notify = new JeyKeu\Notify\Notify();
+$notify->add($handle, $viewData, $type, $isVolatile, $isDissmissable, $excludePages);
 
 ```
 
