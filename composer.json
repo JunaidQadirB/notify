@@ -7,7 +7,7 @@
         "bootstrap",
         "codeigniter"
     ],
-    "homepage": "https://github.com/php-loep/:package_name",
+    "homepage": "https://github.com/JeyKeu/notify",
     "license": "MIT",
     "authors": [
         {
@@ -15,12 +15,6 @@
             "email": "shekhanzai.baloch@gmail.com",
             "homepage": "http://junaidbaloch.com",
             "role": "Developer"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@bitbucket.org:jeykeu/notify.git"
         }
     ],
     "require-dev": {
