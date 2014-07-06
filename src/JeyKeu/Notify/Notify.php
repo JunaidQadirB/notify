@@ -2,71 +2,62 @@
 
 namespace JeyKeu\Notify;
 
-if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
-
 /**
  * Bootstrap3 Notification system for CodeIgniter
- *
- * @subpackage Libraries
+ * 
+ * @package notify
  * @author Junaid Qadir Baloch <shekhanzai.baloch@gmail.com>
  */
+use JeyKeu\Notify\Session\SessionInterface;
+use JeyKeu\Notify\URI\URIInterface;
+use JeyKeu\Notify\View\ViewInterface;
+use JeyKeu\Notify\Session\NativeSession;
+use JeyKeu\Notify\URI\NativeURI;
+use JeyKeu\Notify\View\NativeView;
+
 class Notify
 {
 
-    private $CI;
-    private $notifications;
-    private $viewBase;
-
-    public function __construct()
-    {
-        $this->CI = & get_instance();
-
-        $this->CI->config->load('notification', FALSE, TRUE);
-        $this->viewBase      = $this->CI->config->item('view_base');
-        $this->CI->load->library('session');
-        $this->CI->load->library('uri');
-        $this->notifications = $this->CI->session->userdata('notifications');
-    }
+    /**
+     * The session driver used by Notify.
+     *
+     * @var SessionInterface
+     */
+    protected $session;
 
     /**
-     * Queues notifications in the Notify's Notification system
-     * @param string $handle         An easy-to-remember name for the notification.
-     *                               Something like a slug in wordpress
-     * @param string $viewData       Description
-     * @param string $type           alert|message
-     * @param bool   $isVolatile     if true, the notification will not appear if
-     * @param bool   $isDissmissable If true, use can close the notification
-     *                               the user navigates away or reloads the page.
+     * The uri driver used by Notify.
+     *
+     * @var URIInterface
      */
-    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = TRUE, $excludePages = array())
-    {
-        if (empty($handle) || $this->handleExists($handle)) {
-            return false;
-        }
+    protected $uri;
 
-        if (is_array($this->notifications) && in_array($handle, $this->notifications)) {
-            unset($this->notifications[$handle]);
-        }
+    /**
+     * The view driver used by Notify.
+     *
+     * @var ViewInterface
+     */
+    protected $view;
+    
+    private $notifications = array();
+    
+    private $viewBase;
 
-        $notificationView = (file_exists(APPPATH . "views/" . $this->viewBase . $handle . EXT)) ? $this->viewBase . $handle : $this->viewBase . 'notification_default_view';
-
-        $notification          = (object) array(
-                    'handle'         => $handle,
-                    'view'           => $notificationView,
-                    'viewData'       => $viewData,
-                    'type'           => $type,
-                    'isDissmissable' => $isDissmissable,
-                    'isVolatile'     => $isVolatile,
-                    'excludePages'   => $excludePages
-        );
-        $this->notifications[] = $notification;
-        $this->CI->session->set_userdata('notifications', $this->notifications);
+    public function __construct(SessionInterface $session = null, URIInterface $uri = null, View\ViewInterface $view = null) {
+        $this->session       = $session ? : new NativeSession;
+        $this->uri           = $uri? : new NativeURI;
+        $this->view          = $view? : new NativeView();
+//        $this->CI            = & get_instance();
+//        $this->CI->config->load('notification', FALSE, TRUE);
+        $this->viewBase      = "views/notify_views/";
+//        $this->CI->load->library('session');
+//        $this->CI->load->library('uri');
+//        print_r($this->session);
+        $this->notifications = $this->session->get('notifications');
+//        die("dd");
     }
 
-    private function handleExists($handle)
-    {
+    private function handleExists($handle) {
         if (!is_array($this->notifications)) {
             return false;
         }
@@ -79,15 +70,14 @@ class Notify
         return FALSE;
     }
 
-    public function remove($handle)
-    {
-        foreach ($this->notifications as $key => $notification) {
-            if ($notification->handle == $handle) {
-                unset($this->notifications[$key]);
+    private function isExcluded($notification, $currentUrl) {
+        foreach ($notification->excludePages as $page) {
+            if (in_array($page, $currentUrl)) {
+                return true;
             }
         }
 
-        $this->CI->session->set_userdata('notifications', $this->notifications);
+        return false;
     }
 
     /**
@@ -96,8 +86,7 @@ class Notify
      * @param string $type       message | alert |
      * @param bool   $canDismiss TRUE
      */
-    private function show($message, $type = 'message', $canDismiss = TRUE)
-    {
+    private function show($message, $type = 'message', $canDismiss = TRUE) {
         $message      = html_entity_decode($message);
         $buttonDiv    = '';
         $dismissClass = '';
@@ -108,9 +97,17 @@ class Notify
 
         switch ($type) {
             case 'message':
+            case 'success':
                 $typeClass = 'alert-success';
                 break;
+            case 'info':
+                $typeClass = 'alert-info';
+                break;
+            case 'warning':
+                $typeClass = 'alert-warning';
+                break;
             case 'alert':
+            case 'danger':
                 $typeClass = 'alert-danger';
                 break;
             default :
@@ -130,45 +127,78 @@ MSG;
     }
 
     /**
+     * Queues notifications in the Notify's Notification system
+     * @param string $handle         An easy-to-remember name for the notification.
+     *                               Something like a slug in wordpress
+     * @param string $viewData       Description
+     * @param string $type           alert|message
+     * @param bool   $isVolatile     if true, the notification will not appear if
+     * @param bool   $isDissmissable If true, use can close the notification
+     *                               the user navigates away or reloads the page.
+     */
+    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = TRUE, $excludePages = array()) {
+        if (empty($handle) || $this->handleExists($handle)) {
+            return false;
+        }
+
+        if (is_array($this->notifications) && in_array($handle, $this->notifications)) {
+            unset($this->notifications[$handle]);
+        }
+        $notificationView = (file_exists($this->viewBase . $handle . EXT)) ? $this->viewBase . $handle : $this->viewBase . 'notify_default_view';
+
+        $notification          = (object) array(
+                    'handle'         => $handle,
+                    'view'           => $notificationView,
+                    'viewData'       => $viewData,
+                    'type'           => $type,
+                    'isDissmissable' => $isDissmissable,
+                    'isVolatile'     => $isVolatile,
+                    'excludePages'   => $excludePages
+        );
+        $this->notifications[] = $notification;
+        $this->session->put('notifications', $this->notifications);
+    }
+
+    public function remove($handle) {
+        foreach ($this->notifications as $key => $notification) {
+            if ($notification->handle == $handle) {
+                unset($this->notifications[$key]);
+            }
+        }
+
+        $this->session->put('notifications', $this->notifications);
+    }
+
+    /**
      *
      * @return mixed
      */
-    public function processQueue()
-    {
+    public function processQueue() {
         $messages = '<div class="notification-wrapper col col-lg-4 col-lg-offset-2 stickyTop">';
         if (!is_array($this->notifications) || (is_array($this->notifications) && sizeof($this->notifications) < 1)) {
             return false;
         }
+
         foreach ($this->notifications as $key => $notification) {
-            if (is_array($notification->excludePages)) {
-                $currentUrl = $this->CI->uri->rsegment_array(current_url());
+            if (is_array($notification->excludePages) && sizeof($notification->excludePages > 0)) {
+                $currentUrl = $this->uri->getLastSegment();
+                print_r($currentUrl);
                 $exclude    = $this->isExcluded($notification, $currentUrl);
             }
             if ($exclude) {
                 $exclude = false;
                 break;
             }
-            $message = $this->CI->load->view($notification->view, array('notificationContent' => $notification->viewData), TRUE);
+            $message = $this->view->load($notification->view, array('notificationContent' => $notification->viewData), TRUE);
             $messages .= $this->show($message, $notification->type, $notification->isDissmissable);
             if ($notification->isVolatile) {
                 unset($this->notifications[$key]);
-                $this->CI->session->set_userdata('notifications', $this->notifications);
+                $this->session->put('notifications', $this->notifications);
             }
         }
         $messages .= "</div>";
 
         return $messages;
-    }
-
-    private function isExcluded($notification, $currentUrl)
-    {
-        foreach ($notification->excludePages as $page) {
-            if (in_array($page, $currentUrl)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
 }
