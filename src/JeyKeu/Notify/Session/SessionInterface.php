@@ -1,6 +1,4 @@
-<?php
-
-namespace JeyKeu\Notify\Session;
+<?php namespace JeyKeu\Notify\Session;
 
 /**
  * SessionInterface
@@ -18,7 +16,7 @@ interface SessionInterface
     /**
      * Put a value in the Notify session.
      *
-     * @param  mixed   $value
+     * @param  mixed $value
      * @return void
      */
     public function put($key, $value);

@@ -1,11 +1,9 @@
-<?php
-
-namespace JeyKeu\Notify;
+<?php namespace JeyKeu\Notify;
 
 /**
  * Bootstrap3 Notification system for CodeIgniter
- * 
- * @package notify
+ *
+ * @package Notify
  * @author Junaid Qadir Baloch <shekhanzai.baloch@gmail.com>
  */
 use JeyKeu\Notify\Session\SessionInterface;
@@ -38,12 +36,11 @@ class Notify
      * @var ViewInterface
      */
     protected $view;
-    
     private $notifications = array();
-    
     private $viewBase;
 
-    public function __construct(SessionInterface $session = null, URIInterface $uri = null, View\ViewInterface $view = null) {
+    public function __construct(SessionInterface $session = null, URIInterface $uri = null, View\ViewInterface $view = null)
+    {
         $this->session       = $session ? : new NativeSession;
         $this->uri           = $uri? : new NativeURI;
         $this->view          = $view? : new NativeView();
@@ -57,7 +54,8 @@ class Notify
 //        die("dd");
     }
 
-    private function handleExists($handle) {
+    private function handleExists($handle)
+    {
         if (!is_array($this->notifications)) {
             return false;
         }
@@ -70,7 +68,8 @@ class Notify
         return FALSE;
     }
 
-    private function isExcluded($notification, $currentUrl) {
+    private function isExcluded($notification, $currentUrl)
+    {
         foreach ($notification->excludePages as $page) {
             if (in_array($page, $currentUrl)) {
                 return true;
@@ -86,7 +85,8 @@ class Notify
      * @param string $type       message | alert |
      * @param bool   $canDismiss TRUE
      */
-    private function show($message, $type = 'message', $canDismiss = TRUE) {
+    private function show($message, $type = 'message', $canDismiss = TRUE)
+    {
         $message      = html_entity_decode($message);
         $buttonDiv    = '';
         $dismissClass = '';
@@ -136,7 +136,8 @@ MSG;
      * @param bool   $isDissmissable If true, use can close the notification
      *                               the user navigates away or reloads the page.
      */
-    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = TRUE, $excludePages = array()) {
+    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = TRUE, $excludePages = array())
+    {
         if (empty($handle) || $this->handleExists($handle)) {
             return false;
         }
@@ -159,7 +160,8 @@ MSG;
         $this->session->put('notifications', $this->notifications);
     }
 
-    public function remove($handle) {
+    public function remove($handle)
+    {
         foreach ($this->notifications as $key => $notification) {
             if ($notification->handle == $handle) {
                 unset($this->notifications[$key]);
@@ -173,7 +175,8 @@ MSG;
      *
      * @return mixed
      */
-    public function processQueue() {
+    public function processQueue()
+    {
         $messages = '<div class="notification-wrapper col col-lg-4 col-lg-offset-2 stickyTop">';
         if (!is_array($this->notifications) || (is_array($this->notifications) && sizeof($this->notifications) < 1)) {
             return false;
@@ -200,5 +203,4 @@ MSG;
 
         return $messages;
     }
-
 }

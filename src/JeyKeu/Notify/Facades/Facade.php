@@ -1,6 +1,4 @@
-<?php
-
-namespace JeyKeu\Notify\Facades;
+<?php namespace JeyKeu\Notify\Facades;
 
 abstract class Facade
 {
@@ -17,7 +15,8 @@ abstract class Facade
      *
      * @return \JeyKeu\Notify\Notify
      */
-    public static function instance() {
+    public static function instance()
+    {
         if (static::$instance === null) {
             static::$instance = forward_static_call_array(
                     array(get_called_class(), 'createNotify'), func_get_args()
@@ -30,11 +29,12 @@ abstract class Facade
     /**
      * Handle dynamic, static calls to the object.
      *
-     * @param  string  $method
-     * @param  array   $args
+     * @param  string $method
+     * @param  array  $args
      * @return mixed
      */
-    public static function __callStatic($method, $args) {
+    public static function __callStatic($method, $args)
+    {
         $instance = static::instance();
 
         switch (count($args)) {
@@ -57,5 +57,4 @@ abstract class Facade
                 return call_user_func_array(array($instance, $method), $args);
         }
     }
-
 }

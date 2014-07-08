@@ -1,16 +1,15 @@
-<?php
-
-namespace JeyKeu\Notify\View;
+<?php namespace JeyKeu\Notify\View;
 
 /**
  * Description of NativeView
  *
- * @author jeykeu
+ * @author Junaid Qadir Baloch <shekhanzai.baloch@gmail.com>
  */
 class NativeView implements ViewInterface
 {
 
-    public function load($view, $vars = array(), $return = false) {
+    public function load($view, $vars = array(), $return = false)
+    {
         foreach ($vars as $key => $value) {
             $$key = $value;
         }
@@ -20,8 +19,8 @@ class NativeView implements ViewInterface
 
         $contents = ob_get_contents();
         ob_end_clean();
+
         return $contents;
     }
-
 //put your code here
 }

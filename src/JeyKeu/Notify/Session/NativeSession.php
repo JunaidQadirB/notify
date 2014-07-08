@@ -1,11 +1,9 @@
-<?php
-
-namespace JeyKeu\Notify\Session;
+<?php namespace JeyKeu\Notify\Session;
 
 /**
  * Description of NativeSession
  *
- * @author jeykeu
+ * @author Junaid Qadir Baloch <shekhanzai.baloch@gmail.com>
  */
 class NativeSession implements \JeyKeu\Notify\Session\SessionInterface
 {
@@ -23,7 +21,8 @@ class NativeSession implements \JeyKeu\Notify\Session\SessionInterface
      */
     protected $key = 'jeykeu_notify';
 
-    public function forget($key = null) {
+    public function forget($key = null)
+    {
         if (empty($key)) {
             unset($_SESSION[$this->key]);
         } else {
@@ -33,18 +32,21 @@ class NativeSession implements \JeyKeu\Notify\Session\SessionInterface
         }
     }
 
-    public function get($key) {
+    public function get($key)
+    {
         $store = unserialize($_SESSION[$this->key]);
+
         return $store->$key;
     }
 
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
-    public function put($key, $value) {
+    public function put($key, $value)
+    {
         $data                 = (object) array($key => $value);
         $_SESSION[$this->key] = serialize($data);
     }
-
 }

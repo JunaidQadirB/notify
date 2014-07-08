@@ -1,5 +1,4 @@
 <?php
-
 /**
  * An interface for URI.
  * @package Notify
@@ -22,24 +21,24 @@ interface URIInterface
 
     /**
      * Returns a segment of the URL as specified by the $index variable.
-     * 
-     * @param int $index
-     * @param mixed $url 
+     *
+     * @param int   $index
+     * @param mixed $url
      */
     public function getSegment($index, $url = null);
 
     /**
      * Returns an array with all the segments of the current page or the page
      * specified in the $url parameter.
-     * 
-     * @param mix $url
+     *
+     * @param  mix   $url
      * @return array array of URL segments
      */
     public function getSegments($url = null);
 
     /**
      * Returns the last segment of the url
-     * 
+     *
      * @param string $url
      */
     public function getLastSegment($url = null);

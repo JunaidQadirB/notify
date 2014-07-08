@@ -1,26 +1,25 @@
-<?php
+<?php namespace JeyKeu\Notify\Facades\CodeIgniter;
 
-namespace JeyKeu\Notify\Facades\CodeIgniter;
-
-use JeyKeu\Notify\Facades\Facade;
 use JeyKeu\Notify\Notify as BaseNotify;
 use JeyKeu\Notify\Session\CodeIgniterSession;
 use JeyKeu\Notify\URI\CodeIgniterURI;
-use JeyKeu\Notify\View\CodeIgniterView;
 
 /**
  * Description of Notify
  *
- * @author jeykeu
+ * @author Junaid Qadir Baloch <shekhanzai.baloch@gmail.com>
  */
 class Notify
 {
 
-    public function createNotify() {
-        $ci = &get_instance();
+    public function createNotify()
+    {
+        $ci   = &get_instance();
+        $ci->load->library('session');
+        $sess = new CodeIgniterSession($ci->session);
+
         return new BaseNotify(
-                new CodeIgniterSession($ci->session), new CodeIgniterURI($ci->uri)
+                $sess, new CodeIgniterURI($ci->uri)
         );
     }
-
 }

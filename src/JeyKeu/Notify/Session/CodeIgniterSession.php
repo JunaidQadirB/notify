@@ -1,8 +1,5 @@
-<?php
+<?php namespace JeyKeu\Notify\Session;
 
-namespace JeyKeu\Notify\Session;
-
-use JeyKeu\Notify\Session\SessionInterface;
 use CI_Session;
 
 class CodeIgniterSession implements SessionInterface
@@ -25,11 +22,12 @@ class CodeIgniterSession implements SessionInterface
     /**
      * Creates a new CodeIgniter Session driver for Notify.
      *
-     * @param  \CI_Session  $store
-     * @param  string  $key
+     * @param  \CI_Session $store
+     * @param  string      $key
      * @return void
      */
-    public function __construct(CI_Session $store, $key = null) {
+    public function __construct(CI_Session $store, $key = null)
+    {
 //        die("fsdsdfd");
         $this->store = $store;
         if (isset($key)) {
@@ -42,17 +40,19 @@ class CodeIgniterSession implements SessionInterface
      *
      * @return string
      */
-    public function getKey() {
+    public function getKey()
+    {
         return $this->key;
     }
 
     /**
      * Put a value in the Notify session.
      *
-     * @param  mixed  $value
+     * @param  mixed $value
      * @return void
      */
-    public function put($key, $value) {
+    public function put($key, $value)
+    {
         $this->store->set_userdata($this->getkey(), serialize($value));
     }
 
@@ -61,7 +61,8 @@ class CodeIgniterSession implements SessionInterface
      *
      * @return mixed
      */
-    public function get($key) {
+    public function get($key)
+    {
         return unserialize($this->store->userdata($this->getKey()));
     }
 
@@ -70,8 +71,8 @@ class CodeIgniterSession implements SessionInterface
      *
      * @return void
      */
-    public function forget($key = null) {
+    public function forget($key = null)
+    {
         $this->store->unset_userdata($this->getKey());
     }
-
 }
