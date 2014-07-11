@@ -45,7 +45,7 @@ class Notify
         $this->uri           = $uri? : new NativeURI;
         $this->view          = $view? : new NativeView();
 //        $this->CI            = & get_instance();
-//        $this->CI->config->load('notification', FALSE, TRUE);
+//        $this->CI->config->load('notification', false, true);
         $this->viewBase      = "views/notify_views/";
 //        $this->CI->load->library('session');
 //        $this->CI->load->library('uri');
@@ -61,11 +61,11 @@ class Notify
         }
         foreach ($this->notifications as $key => $value) {
             if ($value->handle == $handle) {
-                return TRUE;
+                return true;
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     private function isExcluded($notification, $currentUrl)
@@ -83,9 +83,9 @@ class Notify
      *
      * @param string $message
      * @param string $type       message | alert |
-     * @param bool   $canDismiss TRUE
+     * @param bool   $canDismiss true
      */
-    private function show($message, $type = 'message', $canDismiss = TRUE)
+    private function show($message, $type = 'message', $canDismiss = true)
     {
         $message      = html_entity_decode($message);
         $buttonDiv    = '';
@@ -110,7 +110,7 @@ class Notify
             case 'danger':
                 $typeClass = 'alert-danger';
                 break;
-            default :
+            default:
                 $typeClass = 'alert-success';
                 break;
         }
@@ -136,7 +136,7 @@ MSG;
      * @param bool   $isDissmissable If true, use can close the notification
      *                               the user navigates away or reloads the page.
      */
-    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = TRUE, $excludePages = array())
+    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = true, $excludePages = array())
     {
         if (empty($handle) || $this->handleExists($handle)) {
             return false;
@@ -171,6 +171,14 @@ MSG;
         $this->session->put('notifications', $this->notifications);
     }
 
+    public function removeAll()
+    {
+        foreach ($this->notifications as $key => $notification) {
+            unset($this->notifications[$key]);
+        }
+        $this->session->put('notifications', $this->notifications);
+    }
+
     /**
      *
      * @return mixed
@@ -192,7 +200,7 @@ MSG;
                 $exclude = false;
                 break;
             }
-            $message = $this->view->load($notification->view, array('notificationContent' => $notification->viewData), TRUE);
+            $message = $this->view->load($notification->view, array('notificationContent' => $notification->viewData), true);
             $messages .= $this->show($message, $notification->type, $notification->isDissmissable);
             if ($notification->isVolatile) {
                 unset($this->notifications[$key]);
