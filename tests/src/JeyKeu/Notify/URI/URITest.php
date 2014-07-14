@@ -1,7 +1,6 @@
 <?php namespace JeyKeu\Notify\URI\Test;
 
 use JeyKeu\Notify\URI\NativeURI;
-use JeyKeu\Notify\URI;
 
 /**
  * Description of TestURL
