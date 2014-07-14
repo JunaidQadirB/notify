@@ -44,14 +44,8 @@ class Notify
         $this->session       = $session ? : new NativeSession;
         $this->uri           = $uri? : new NativeURI;
         $this->view          = $view? : new NativeView();
-//        $this->CI            = & get_instance();
-//        $this->CI->config->load('notification', false, true);
         $this->viewBase      = "views/notify_views/";
-//        $this->CI->load->library('session');
-//        $this->CI->load->library('uri');
-//        print_r($this->session);
         $this->notifications = $this->session->get('notifications');
-//        die("dd");
     }
 
     private function handleExists($handle)
@@ -68,14 +62,11 @@ class Notify
         return false;
     }
 
-    private function isExcluded($notification, $currentUrl)
+    private function isExcluded($notification, $page)
     {
-        foreach ($notification->excludePages as $page) {
-            if (in_array($page, $currentUrl)) {
-                return true;
-            }
+        if (in_array($page, $notification->excludePages)) {
+            return true;
         }
-
         return false;
     }
 
@@ -128,13 +119,16 @@ MSG;
 
     /**
      * Queues notifications in the Notify's Notification system
-     * @param string $handle         An easy-to-remember name for the notification.
+     * @param string $handle         An easy-to-remember name for 
+     *                               the notification.
      *                               Something like a slug in wordpress
-     * @param string $viewData       Description
+     * @param string $viewData       view or text to be displayedon the 
+     *                               notification
      * @param string $type           alert|message
-     * @param bool   $isVolatile     if true, the notification will not appear if
-     * @param bool   $isDissmissable If true, use can close the notification
-     *                               the user navigates away or reloads the page.
+     * @param bool   $isVolatile     if true, the notification will not appear
+     *                               if the user navigates away or reloads the page.
+     * @param bool   $isDissmissable If true, user can close the notification
+     *                                  
      */
     public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = true, $excludePages = array())
     {
@@ -160,6 +154,10 @@ MSG;
         $this->session->set('notifications', $this->notifications);
     }
 
+    /**
+     * Reomve a single notification as specied by the $handle param.
+     * @param string $handle
+     */
     public function remove($handle)
     {
         foreach ($this->notifications as $key => $notification) {
@@ -171,6 +169,9 @@ MSG;
         $this->session->set('notifications', $this->notifications);
     }
 
+    /**
+     * Remove all the notifications
+     */
     public function removeAll()
     {
         foreach ($this->notifications as $key => $notification) {
@@ -180,10 +181,10 @@ MSG;
     }
 
     /**
-     *
+     * Generates HTML and displays the notification(s).
      * @return mixed
      */
-    public function processQueue()
+    public function render()
     {
         $messages = '<div class="notification-wrapper col col-lg-4 col-lg-offset-2 stickyTop">';
         if (!is_array($this->notifications) || (is_array($this->notifications) && sizeof($this->notifications) < 1)) {
@@ -192,9 +193,8 @@ MSG;
 
         foreach ($this->notifications as $key => $notification) {
             if (is_array($notification->excludePages) && sizeof($notification->excludePages > 0)) {
-                $currentUrl = $this->uri->getLastSegment();
-                print_r($currentUrl);
-                $exclude    = $this->isExcluded($notification, $currentUrl);
+                $currentPage = $this->uri->getLastSegment();
+                $exclude     = $this->isExcluded($notification, $currentPage);
             }
             if ($exclude) {
                 $exclude = false;
