@@ -1,6 +1,6 @@
 {
     "name": "jeykeu/notify",
-    "description": "Bootstrap3 notifications for CodeIgniter",
+    "description": "A notification system for your website.",
     "keywords": [
         "jeykeu",
         "notify",
@@ -11,7 +11,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "jeykeu",
+            "name": "Junaid Qadir Baloch",
             "email": "shekhanzai.baloch@gmail.com",
             "homepage": "http://junaidbaloch.com",
             "role": "Developer"
