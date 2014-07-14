@@ -1,5 +1,5 @@
 <?php namespace JeyKeu\Notify\View;
-
+use JeyKeu\Notify\View\ViewInterface;
 /**
  * Description of NativeView
  *

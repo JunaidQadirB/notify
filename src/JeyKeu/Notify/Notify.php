@@ -157,7 +157,7 @@ MSG;
                     'excludePages'   => $excludePages
         );
         $this->notifications[] = $notification;
-        $this->session->put('notifications', $this->notifications);
+        $this->session->set('notifications', $this->notifications);
     }
 
     public function remove($handle)
@@ -168,7 +168,7 @@ MSG;
             }
         }
 
-        $this->session->put('notifications', $this->notifications);
+        $this->session->set('notifications', $this->notifications);
     }
 
     public function removeAll()
@@ -176,7 +176,7 @@ MSG;
         foreach ($this->notifications as $key => $notification) {
             unset($this->notifications[$key]);
         }
-        $this->session->put('notifications', $this->notifications);
+        $this->session->set('notifications', $this->notifications);
     }
 
     /**
@@ -204,7 +204,7 @@ MSG;
             $messages .= $this->show($message, $notification->type, $notification->isDissmissable);
             if ($notification->isVolatile) {
                 unset($this->notifications[$key]);
-                $this->session->put('notifications', $this->notifications);
+                $this->session->set('notifications', $this->notifications);
             }
         }
         $messages .= "</div>";

@@ -51,7 +51,7 @@ class CodeIgniterSession implements SessionInterface
      * @param  mixed $value
      * @return void
      */
-    public function put($key, $value)
+    public function set($key, $value)
     {
         $this->store->set_userdata($this->getkey(), serialize($value));
     }
@@ -71,7 +71,7 @@ class CodeIgniterSession implements SessionInterface
      *
      * @return void
      */
-    public function forget($key = null)
+    public function remove($key = null)
     {
         $this->store->unset_userdata($this->getKey());
     }

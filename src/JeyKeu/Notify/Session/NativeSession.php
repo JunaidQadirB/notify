@@ -19,34 +19,38 @@ class NativeSession implements \JeyKeu\Notify\Session\SessionInterface
      *
      * @var string
      */
-    protected $key = 'jeykeu_notify';
-
-    public function forget($key = null)
-    {
-        if (empty($key)) {
-            unset($_SESSION[$this->key]);
-        } else {
-            $data                 = unserialize($_SESSION($this->key));
-            unset($data->$key);
-            $_SESSION[$this->key] = serialize($data);
-        }
-    }
-
-    public function get($key)
-    {
-        $store = unserialize($_SESSION[$this->key]);
-
-        return $store->$key;
-    }
+    protected $appSessionKey = 'jeykeu_notify';
 
     public function getKey()
     {
-        return $this->key;
+        return $this->appSessionKey;
     }
 
-    public function put($key, $value)
+
+    public function get($key)
+    {
+        if (!isset($_SESSION[$this->appSessionKey])) {
+            return false;
+        }
+        $data = unserialize($_SESSION[$this->appSessionKey]);
+
+        return $data->$key;
+    }
+
+    public function set($key, $value)
     {
         $data                 = (object) array($key => $value);
-        $_SESSION[$this->key] = serialize($data);
+        $_SESSION[$this->appSessionKey] = serialize($data);
+    }
+    
+    public function remove($key = null)
+    {
+        if (empty($key)) {
+            unset($_SESSION[$this->appSessionKey]);
+        } else {
+            $data                           = unserialize($_SESSION[$this->appSessionKey]);
+            unset($data->$key);
+            $_SESSION[$this->appSessionKey] = serialize($data);
+        }
     }
 }

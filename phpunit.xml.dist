@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php">
+<phpunit bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
+         verbose="true">
     <testsuites>
         <testsuite name="JeyKeu Test Suite">
             <directory>tests/JeyKeu</directory>
@@ -7,8 +15,12 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">src/Silex</directory>
             <directory suffix=".php">src/JeyKeu</directory>
         </whitelist>
     </filter>
+    <php>
+        <server name='HTTP_HOST' value='localhost' />
+        <server name='REQUEST_URI' value='/NotifyNativeDemo/index.php'/>
+        <server name='REQUEST_SCHEME' value='http' />
+    </php>
 </phpunit>

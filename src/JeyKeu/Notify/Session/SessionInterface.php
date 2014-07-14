@@ -19,7 +19,7 @@ interface SessionInterface
      * @param  mixed $value
      * @return void
      */
-    public function put($key, $value);
+    public function set($key, $value);
 
     /**
      * Get the Notify session value.
@@ -33,5 +33,5 @@ interface SessionInterface
      *
      * @return void
      */
-    public function forget($key);
+    public function remove($key);
 }

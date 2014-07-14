@@ -2,10 +2,15 @@
 <phpunit bootstrap="bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
+         convertNoticesToExceptions="false"
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
+         syntaxCheck="true"
          verbose="true">
+    <php>
+        <server name='HTTP_HOST' value='localhost' />
+        <server name='REQUEST_URI' value='/NotifyNativeDemo/index.php'/>
+        <server name='REQUEST_SCHEME' value='http' />
+    </php>
 </phpunit>

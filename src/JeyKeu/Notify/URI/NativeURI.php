@@ -1,5 +1,7 @@
 <?php namespace JeyKeu\Notify\URI;
 
+use JeyKeu\Notify\URI\URIInterface;
+
 /**
  * Description of NativeURI
  *
@@ -20,9 +22,10 @@ class NativeURI implements URIInterface
         $this->scheme = $_SERVER['REQUEST_SCHEME'];
     }
 
-    public function getCurrentPage()
+    private function trimScheme($url)
     {
-        $url = $this->getCurrentUrl();
+        $pattern = "/((ftp|http(s){0,1}){0,1}:\/\/)(www.){0,1}/";
+        return preg_replace($pattern, "", $url);
     }
 
     public function getCurrentUrl()
@@ -32,6 +35,13 @@ class NativeURI implements URIInterface
         $this->scheme = $_SERVER['REQUEST_SCHEME'];
 
         return $this->scheme . "://" . $this->host . $this->uri;
+    }
+
+    public function getCurrentPage()
+    {
+        $url      = $this->trimScheme($this->getCurrentUrl());
+        $segments = explode("/", $url);
+        return $segments[sizeof($segments) - 1];
     }
 
     /**
@@ -52,8 +62,11 @@ class NativeURI implements URIInterface
     public function getSegments($url = null)
     {
         if (empty($url)) {
-            $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+            $url = $this->trimScheme($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+        } else {
+            $url = $this->trimScheme($url);
         }
+
 
         $segments = explode("/", $url);
 
@@ -67,7 +80,6 @@ class NativeURI implements URIInterface
         }
         $segments = $this->getSegments($url);
         $len      = sizeof($segments) - 1;
-        print_r($this->getSegment($len));
 
         return $this->getSegment($len);
     }
