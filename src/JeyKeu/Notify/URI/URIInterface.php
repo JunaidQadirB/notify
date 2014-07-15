@@ -1,11 +1,10 @@
-<?php
+<?php namespace JeyKeu\Notify\URI;
+
 /**
  * An interface for URI.
  * @package Notify
  * @subpackage URI
  */
-namespace JeyKeu\Notify\URI;
-
 interface URIInterface
 {
 

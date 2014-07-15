@@ -7,7 +7,7 @@ use JeyKeu\Notify\URI\NativeURI;
  *
  * @author jeykeu
  */
-class URITest extends \PHPUnit_Framework_TestCase
+class NativeURITest extends \PHPUnit_Framework_TestCase
 {
 
     /**
