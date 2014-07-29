@@ -4,7 +4,7 @@ Bootstrap3 notifications for PHP
 
 ##Demo
 
-Here's a [Demo](http://notify.junaidqadir.com/)
+Here's a [Demo](http://notify.junaidqadir.com/) using Native PHP.
 
 ## Install
 
