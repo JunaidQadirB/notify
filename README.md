@@ -1,6 +1,6 @@
-# JeyKeu Notify for CodeIgniter
+# JeyKeu Notify for PHP
 
-Bootstrap3 notifications for CodeIgniter
+Bootstrap3 notifications for PHP
 
 
 ## Install
