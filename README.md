@@ -2,6 +2,9 @@
 
 Bootstrap3 notifications for PHP
 
+##Demo
+
+Here's a [Demo](http://notify.junaidqadir.com/)
 
 ## Install
 
