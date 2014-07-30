@@ -54,7 +54,7 @@ class Notify
             return false;
         }
         foreach ($this->notifications as $key => $value) {
-            if ($value->handle == $handle) {
+            if ($value->getHandle() == $handle) {
                 return true;
             }
         }
@@ -62,9 +62,15 @@ class Notify
         return false;
     }
 
+    /**
+     * 
+     * @param Notification $notification
+     * @param string $page
+     * @return boolean
+     */
     private function isExcluded($notification, $page)
     {
-        if (in_array($page, $notification->excludePages)) {
+        if (in_array($page, $notification->getExcludedPages())) {
             return true;
         }
         return false;
@@ -125,13 +131,14 @@ MSG;
      * @param string $viewData       view or text to be displayedon the 
      *                               notification
      * @param string $type           alert|message
-     * @param bool   $isVolatile     if true, the notification will not appear
+     * @param bool   $isPersisted     if true, the notification will show again
      *                               if the user navigates away or reloads the page.
      * @param bool   $isDissmissable If true, user can close the notification
      *                                  
      */
-    public function add($handle, $viewData = null, $type = 'alert', $isVolatile = false, $isDissmissable = true, $excludePages = array())
+    public function add(Notification $notification)
     {
+        $handle = $notification->getHandle();
         if (empty($handle) || $this->handleExists($handle)) {
             return false;
         }
@@ -139,19 +146,20 @@ MSG;
         if (is_array($this->notifications) && in_array($handle, $this->notifications)) {
             unset($this->notifications[$handle]);
         }
-        $notificationView = (file_exists($this->viewBase . $handle . EXT)) ? $this->viewBase . $handle : $this->viewBase . 'notify_default_view';
-
-        $notification          = (object) array(
-                    'handle'         => $handle,
-                    'view'           => $notificationView,
-                    'viewData'       => $viewData,
-                    'type'           => $type,
-                    'isDissmissable' => $isDissmissable,
-                    'isVolatile'     => $isVolatile,
-                    'excludePages'   => $excludePages
-        );
+        $notificationView      = (file_exists($this->viewBase . $handle . EXT)) ? $this->viewBase . $handle : $this->viewBase . 'notify_default_view';
+        $notification->setView($notificationView);
+//        $notification          = (object) array(
+//                    'handle'         => $handle,
+//                    'view'           => $notificationView,
+//                    'viewData'       => $viewData,
+//                    'type'           => $type,
+//                    'isDissmissable' => $isDissmissable,
+//                    'isPersisted'     => $isPersisted,
+//                    'excludePages'   => $excludePages
+//        );
         $this->notifications[] = $notification;
         $this->session->set('notifications', $this->notifications);
+        return $this;
     }
 
     /**
@@ -160,8 +168,10 @@ MSG;
      */
     public function remove($handle)
     {
+//        print_r($this->notifications);
+
         foreach ($this->notifications as $key => $notification) {
-            if ($notification->handle == $handle) {
+            if ($notification->getHandle() == $handle) {
                 unset($this->notifications[$key]);
             }
         }
@@ -186,29 +196,34 @@ MSG;
      */
     public function render()
     {
+
         $messages = '<div class="notification-wrapper col col-lg-4 col-lg-offset-2 stickyTop">';
         if (!is_array($this->notifications) || (is_array($this->notifications) && sizeof($this->notifications) < 1)) {
             return false;
         }
 
+        /**
+         * var Notification $notification
+         */
         foreach ($this->notifications as $key => $notification) {
-            if (is_array($notification->excludePages) && sizeof($notification->excludePages > 0)) {
-                $currentPage = $this->uri->getLastSegment();
-                $exclude     = $this->isExcluded($notification, $currentPage);
+            $excludedPaged = $notification->getExcludedPages();
+            if (is_array($excludedPaged) && sizeof($excludedPaged) > 0) {
+                $currentPage    = $this->uri->getLastSegment();
+                $isPageExcluded = $this->isExcluded($notification, $currentPage);
             }
-            if ($exclude) {
-                $exclude = false;
+            if ($isPageExcluded) {
+                $isPageExcluded = false;
                 break;
             }
-            $message = $this->view->load($notification->view, array('notificationContent' => $notification->viewData), true);
-            $messages .= $this->show($message, $notification->type, $notification->isDissmissable);
-            if ($notification->isVolatile) {
+            $message = $this->view->load($notification->getView(), array('notificationContent' => $notification->getViewData()), true);
+            $messages .= $this->show($message, $notification->getType(), $notification->getIsDissmissable());
+            
+            if (true != $notification->getIsPersisted() ) {
                 unset($this->notifications[$key]);
                 $this->session->set('notifications', $this->notifications);
             }
         }
         $messages .= "</div>";
-
         return $messages;
     }
 }
