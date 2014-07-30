@@ -22,10 +22,18 @@ Via Composer
 ## Usage
 
 ``` php
+$notification  new JeyKeu\NotifyNotification();
 $notify = new JeyKeu\Notify\Notify();
 
+//Prepare notification
+$notification
+    ->setHandle($handle)
+    ->setViewData($viewData)
+    ->setIsDissmissable($bool)
+    ->setType($type);
+
 //Add a notification
-$notify->add($handle, $viewData, $type, $isVolatile, $isDissmissable, $excludePages);
+$notify->add($notification);
 
 //Remove a notification
 $notify->remove($handle);
