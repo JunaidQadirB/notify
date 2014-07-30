@@ -1,7 +1,7 @@
 <?php namespace JeyKeu\Notify;
 
 /**
- * Bootstrap3 Notification system for CodeIgniter
+ * Bootstrap3 Notification system for PHP
  *
  * @package Notify
  * @author Junaid Qadir Baloch <shekhanzai.baloch@gmail.com>
