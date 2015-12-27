@@ -13,17 +13,14 @@
         {
             "name": "Junaid Qadir Baloch",
             "email": "shekhanzai.baloch@gmail.com",
-            "homepage": "http://junaidqadir.com",
+            "homepage": "http://junaidbaloch.com",
             "role": "Developer"
         }
     ],
-    {
-        "require":{
-            "php": ">=5.4.0",
-        }
+     "minimum-stability": "dev",
+    "require":{
+        "php": ">=5.4.0"
     },
-    "minimum-stability": "dev",
-    
     "require-dev": {
     },
     "autoload": {
